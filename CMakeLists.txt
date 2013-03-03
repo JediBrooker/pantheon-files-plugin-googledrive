@@ -8,18 +8,18 @@ project(Marlin-GoogleDrive)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Vala stuff
-find_package(Vala REQUIRED)
-include(ValaVersion)
-ensure_vala_version("0.12.0" MINIMUM)
-include(ValaPrecompile)
-vala_precompile(VALA_C
-    plugin.vala
-PACKAGES
-    gtk+-3.0
-    marlincore
-OPTIONS
-    --thread
-)
+#find_package(Vala REQUIRED)
+#include(ValaVersion)
+#ensure_vala_version("0.12.0" MINIMUM)
+#include(ValaPrecompile)
+#vala_precompile(VALA_C
+#    plugin.vala
+#PACKAGES
+#    gtk+-3.0
+#    marlincore
+#OPTIONS
+#    --thread
+#)
 
 # C stuff
 find_package(PkgConfig)
@@ -33,10 +33,12 @@ set(CFLAGS
 set(LIB_PATHS
     ${DEPS_LIBRARY_DIRS}
 )
+include_directories(${CMAKE_SOURCE_DIR})
 link_directories(${LIB_PATHS})
 add_definitions(${CFLAGS})
 
-add_library(marlin-googledrive SHARED ${VALA_C})
+add_library(marlin-googledrive SHARED
+	plugin.c)
 target_link_libraries(marlin-googledrive marlincore ${DEPS_LIBRARIES})
 
 install(FILES googledrive.plug DESTINATION lib/pantheon-files/plugins/)
